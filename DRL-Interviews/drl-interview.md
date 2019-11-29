@@ -54,16 +54,18 @@
 >![](assets/wGuj5.png)
 >Key points:
 
->Policy iteration includes: policy evaluation + policy improvement, and the two are repeated iteratively until policy >converges.
->Value iteration includes: finding optimal value function + one policy extraction. There is no repeat of the two because once >the value function is optimal, then the policy out of it should also be optimal (i.e. converged).
->Finding optimal value function can also be seen as a combination of policy improvement (due to max) and truncated policy >evaluation (the reassignment of v_(s) after just one sweep of all states regardless of convergence).
->The algorithms for policy evaluation and finding optimal value function are highly similar except for a max operation (as highlighted)
+### Policy iteration includes: policy evaluation + policy improvement, and the two are repeated iteratively until policy converges.
 
->Similarly, the key step to policy improvement and policy extraction are identical except the former involves a stability check.
+### Value iteration includes: finding optimal value function + one policy extraction. There is no repeat of the two because once >the value function is optimal, then the policy out of it should also be optimal (i.e. converged).
 
->In my experience, policy iteration is faster than value iteration, as a policy converges more quickly than a value function. I remember this is also described in the book.
+### Finding optimal value function can also be seen as a combination of policy improvement (due to max) and truncated policy evaluation (the reassignment of v_(s) after just one sweep of all states regardless of convergence).
 
->I guess the confusion mainly came from all these somewhat similar terms, which also confused me before.
+### The algorithms for policy evaluation and finding optimal value function are highly similar except for a max operation (as highlighted)
+
+### Similarly, the key step to policy improvement and policy extraction are identical except the former involves a stability check.
+
+### In my experience, policy iteration is faster than value iteration, as a policy converges more quickly than a value function. I remember this is also described in the book.
+
 >参考[值迭代算法](https://zhuanlan.zhihu.com/p/55217561)
 >
 >
