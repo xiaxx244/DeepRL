@@ -84,7 +84,7 @@ If it is not satisfied for Markovian condition, we can only use the current stat
 >
 11. 简述动态规划(DP)算法？
 > 不知道说的是一般的DP算法，还是为了解决MDP问题的DP算法。这里假设指的是后者。总的来说DP方法
->就是利用最优贝尔曼方程来更新值函数以求解策略的方法。最优贝尔曼方程如下：
+>就是利用最优贝尔曼方程(Bellman Optimality Equation)来更新值函数以求解策略的方法。最优贝尔曼方程如下：
 >![](assets/interview-11.png)
 >
 >参考[DP算法概述](https://zhuanlan.zhihu.com/p/54763496/edit)
