@@ -51,6 +51,16 @@
 > 策略迭代。它有两个循环，一个是在策略估计的时候，为了求当前策略的值函数需要迭代很多次。
 >另外一个是外面的大循环，就是策略评估，策略提升这个循环。值迭代算法则是一步到位，直接估计
 >最优值函数，因此没有策略提升环节。
+Key points:
+
+Policy iteration includes: policy evaluation + policy improvement, and the two are repeated iteratively until policy converges.
+Value iteration includes: finding optimal value function + one policy extraction. There is no repeat of the two because once the value function is optimal, then the policy out of it should also be optimal (i.e. converged).
+Finding optimal value function can also be seen as a combination of policy improvement (due to max) and truncated policy evaluation (the reassignment of v_(s) after just one sweep of all states regardless of convergence).
+The algorithms for policy evaluation and finding optimal value function are highly similar except for a max operation (as highlighted)
+Similarly, the key step to policy improvement and policy extraction are identical except the former involves a stability check.
+In my experience, policy iteration is faster than value iteration, as a policy converges more quickly than a value function. I remember this is also described in the book.
+
+I guess the confusion mainly came from all these somewhat similar terms, which also confused me before.
 >参考[值迭代算法](https://zhuanlan.zhihu.com/p/55217561)
 >
 >
