@@ -56,7 +56,7 @@
 
 ### Policy iteration includes: policy evaluation + policy improvement, and the two are repeated iteratively until policy converges.
 
-### Value iteration includes: finding optimal value function + one policy extraction. There is no repeat of the two because once >the value function is optimal, then the policy out of it should also be optimal (i.e. converged).
+### Value iteration includes: finding optimal value function + one policy extraction. There is no repeat of the two because once the value function is optimal, then the policy out of it should also be optimal (i.e. converged).
 
 ### Finding optimal value function can also be seen as a combination of policy improvement (due to max) and truncated policy evaluation (the reassignment of v_(s) after just one sweep of all states regardless of convergence).
 
@@ -73,9 +73,10 @@
 > 如果不满足马尔科夫性，强行只用当前的状态来决策，势必导致决策的片面性，得到不好的策略。
 >为了解决这个问题，可以利用RNN对历史信息建模，获得包含历史信息的状态表征。表征过程可以
 >使用注意力机制等手段。最后在表征状态空间求解MDP问题。
+If it is not satisfied for Markovian condition, we can only use the current state to make decision, which leads to the decision to be partial and a bad decision result. To sovle this problem, we can use RNN to model the historical information and obtain the state representation includes the historical information. In the representation process, we can use attention mechanism such as Encoder-Decoder. Finally, we can solve the MDP process at the representation space.
 
 10. 求解马尔科夫决策过程都有哪些方法？有模型用什么方法？动态规划是怎么回事？
-> 方法有：动态规划，时间差分，蒙特卡洛。
+> 方法有：动态规划，时间差分，蒙特卡洛。 (Methods include: Dynamic programming, temporal-difference learning and Monto-carlo)
 >有模型可以使用动态规划方法。
 >动态规划是指：将一个问题拆分成几个子问题，分别求解这些子问题，然后获得原问题的解。
 >贝尔曼方程中为了求解一个状态的值函数，利用了其他状态的值函数，就是这种思想（个人觉得）。
