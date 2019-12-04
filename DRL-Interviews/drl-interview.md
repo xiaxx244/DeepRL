@@ -240,26 +240,92 @@ If it is not satisfied for Markovian condition, we can only use the current stat
 > off-policy。因为在DDPG为了保证一定的探索，对于输出动作加了一定的噪音，也就是说行为策略不再是优化的策略。
 
 36. 是否了解过D4PG算法？简述其过程
+Deep Distributed Distributional Deterministic Policy Gradients (D4PG) network.
+D4PG builds on the Deep Deterministic Policy Gradients (DDPG) approach (paper, code), making several improvements including the introduction of a distributional critic, using distributed agents running on multiple threads to collect experiences, prioritised experience replay (PER) and N-step returns.
 
 
 37. 简述A3C算法？A3C是on-policy还是off-policy，为什么？
+## Asynchronous: Unlike other popular Deep Reinforcement Learning algorithms like Deep Q-Learning which uses a single agent and a single environment, This algorithm uses multiple agents with each agent having its own network parameters and a copy of the environment. This agents interact with their respective environments Asynchronously, learning with each interaction. Each agent is controlled by a global network. As each agent gains more knowledge, it contributes to the total knowledge of the global network. The presence of a global network allows each agent to have more diversified training data. This setup mimics the real-life environment in which humans live as each human gains knowledge from the experiences of some other human thus allowing the whole “global network” to be better.
+
+## Actor-Critic: Unlike some simpler techniques which are based on either Value-Iteration methods or Policy-Gradient methods, the A3C algorithm combines the best parts of both the methods ie the algorithm predicts both the value function V(s) as well as the optimal policy function \pi (s). The learning agent uses the value of the Value function (Critic) to update the optimal policy function (Actor). Note that here the policy function means the probabilistic distribution of the action space. To be exact, the learning agent determines the conditional probability P(a|s ;\theta) ie the parametrized probability that the agent chooses the action a when in state s.
+
+## Advantage: Typically in the implementation of Policy Gradient, the value of Discounted Returns(\gamma r) to tell the agent which of it’s actions were rewarding and which ones were penalized. By using the value of Advantage instead, the agent also learns how much better the rewards were than it’s expectation. This gives a new-found insight to the agent into the environment and thus the learning process is better. The advantage metric is given by the following expression:-
+Advantage: A = Q(s, a) – V(s)
+
+## Advantage:
+This algorithm is faster and more robust than the standard Reinforcement Learning Algorithms.
+It performs better than the other Reinforcement learning techniques because of the diversification of knowledge as explained above.
+It can be used on discrete as well as continuous action spaces.
+
+## A3C in on policy. The reason why it is on-policy:
+The reason A3C is on-policy is because it uses the policy gradient theorem to find an estimate for the gradient of a given policy pi. This estimate includes an expectation over states encountered when following that policy pi. The policy gradient theorem only holds when your expectation ( or in this case samples) are from that same distribution pi
+
 38. A3C算法是如何异步更新的？是否能够阐述GA3C和A3C的区别？
+![](assets/a3c.png)
+![](assets/a3c2.png)
+Each agent is controlled by a global network. As each agent gains more knowledge, it contributes to the total knowledge of the global network. The presence of a global network allows each agent to have more diversified training data. This setup mimics the real-life environment in which humans live as each human gains knowledge from the experiences of some other human thus allowing the whole “global network” to be better.
+GA3C(GA3C: GPU-based A3C for Deep Reinforcement Learning) vs A3C:
+Agents act concurrently both in A3C and GA3C. In A3C, however, each agent has a replica of the model, whereas in GA3C there is only one GPU instance of the model. In GA3C, agents utilize predictors to query the network for policies
+while trainers gather experiences for network updates.
+![](assets/hhh.png)
 39. 简述A3C的优势函数？
+## Advantage: Typically in the implementation of Policy Gradient, the value of Discounted Returns(\gamma r) to tell the agent which of it’s actions were rewarding and which ones were penalized. By using the value of Advantage instead, the agent also learns how much better the rewards were than it’s expectation. This gives a new-found insight to the agent into the environment and thus the learning process is better. The advantage metric is given by the following expression:-
+Advantage: A = Q(s, a) – V(s)
 40. 什么是重要性采样？
+importance sampling is a general technique for estimating properties of a particular distribution, while only having samples generated from a different distribution than the distribution of interest. It is related to umbrella sampling in computational physics. Depending on the application, the term may refer to the process of sampling from this alternative distribution, the process of inference, or both.
+![](assets/LLL.png)
+![](assets/is.png)
+![](assets/is2.png)
+![](assets/is3.png)
+
 41. 为什么TRPO能保证新策略的回报函数单调不减？
+Minorize-Maximization MM algorithm
+We start with an initial policy guess. We find a lower bound M that approximate the expected reward η locally at the current guess. We locate the optimal point for M and use it as the next guess. We approximate a lower bound again and repeat the iteration. Eventually, our guess will converge to the optimal policy. To make this work, M should be easier to optimize than η. As a preview, M is a quadratic equation
+If M is a lower bound, it will never cross the red line η. But let hypothesis the expected reward for the new policy is lower in η. Then the blue line must cross η (the right side figure below) and contradict that it is a lower bound.
 42. TRPO是如何通过优化方法使每个局部点找到让损失函数非增的最优步长来解决学习率的问题；
+Trust region
+In the trust region, we determine the maximum step size that we want to explore and then we locate the optimal point within this trust region. Let’s start with an initial maximum step size δ as the radius of the trust region:
+![](assets/trust.png)
+
+m is our approximation to the original objective function f. Our objective now is finding the optimal point for m within the radius δ. We repeat the process iteratively until reaching the peak.
+To control the learning speed better, we can be expanded or shrink δ in runtime according to the curvature of the surface. In the traditional trust region method, since we approximate the objective function f with m, one possibility is to shrink the trust region if m is a poor approximator of f at the optimal point. On the contrary, if the approximation is good, we expand it. But calculating f may not be simple in RL. Alternatively, we can shrink the region if the divergence of the new and current policy is getting large (or vice versa). For example, in order not to get overconfidence, we can shrink the trust region if the policy is changing too much.
 43. 如何理解利用平均KL散度代替最大KL散度？
+The max KL method learned somewhat more slowly than our final method, due to the more restrictive form of the constraint, but overall the result suggests that the average KL divergence constraint has a similar effect as the theorecally justified maximum KL divergence.
 44. 简述PPO算法？与TRPO算法有何关系？
+Proximal Policy Optimization :
+A proximal policy optimization (PPO) algorithm that uses fixed-length trajectory segments. Each iteration, each of N (parallel) actors collect T timesteps of data. Then we
+construct the surrogate loss on these NT timesteps of data, and optimize it with minibatch SGD
+(or usually for better performance, Adam [KB14]), for K epochs.
+![](assets/PPO.png)
+![](assets/TRPO.png)
+trust region policy optimization (TRPO) is relatively complicated, and is not compatible with architectures that include noise (such as dropout) or parameter sharing (between the policy and value function, or with auxiliary tasks).
+PPO adds a soft constraint that can be optimized by a first-order optimizer. We may make some bad decisions once a while but it strikes a good balance on the speed of the optimization. Experimental results prove that this kind of balance achieves the best performance with the most simplicity.
 45. 简述DPPO和PPO的关系？
+These include normalization of inputs and rewards as well as an additional term in
+the loss that penalizes large violations of the trust region constraint. We adopt similar augmentations
+in the distributed setting but find that sharing and synchronization of various statistics across workers
+requires some care. The implementation of our distributed PPO (DPPO) is in TensorFlow, the
+parameters reside on a parameter server, and workers synchronize their parameters after every
+gradient step. 
+
+Pseudocode for the Distributed PPO algorithm is provided in Algorithm Boxes 2 and 3. W is the
+number of workers; D sets a threshold for the number of workers whose gradients must be available
+to update the parameters. M, B is the number of sub-iterations with policy and baseline updates
+given a batch of datapoints. T is the number of data points collected per worker before parameter
+updates are computed. K is the number of time steps for computing K-step returns and truncated
+backprop through time (for RNNs)
+![](assets/dppo.png)
+
 46. 强化学习如何用在推荐系统中？
 47. 推荐场景中奖赏函数如何设计？
 48. 场景中状态是什么，当前状态怎么转移到下一状态？
+The state describes the current situation. For a robot that is learning to walk, the state is the position of its two legs. For a Go program, the state is the positions of all the pieces on the board.
+the next state depends on the previous state and the action taken
 49. 自动驾驶和机器人的场景如何建模成强化学习问题？MDP各元素对应真实场景中的哪些变量？
 50. 强化学习需要大量数据，如何生成或采集到这些数据？
 51. 是否用某种DRL算法玩过Torcs游戏？具体怎么解决？
 52. 是否了解过奖励函数的设置(reward shaping)？
-
-
+Reward shaping is a technique inspired by animal training where supplemental rewards are provided to make a problem easier to learn. There is usually an obvious natural reward for any problem. For games, this is usually a win or loss. For financial problems, the reward is usually profit. Reward shaping augments the natural reward signal by adding additional rewards for making progress toward a good solution.
 
 ### 贡献致谢列表
 @[huiwenzhang](https://github.com/huiwenzhang)
